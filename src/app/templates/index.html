@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <script>
+        async function sendClick() {
+            const response = await fetch("/records", { method: "POST" });
+            const result = await response.json();
+            console.log(result);
+        }
+    </script>
+</head>
+<body>
+    <h1>기록 저장 서비스</h1>
+    
+    <!-- 이미지 추가 -->
+    <img src="/static/img/christmas_tree.jpeg" alt="Example Image" width="300">
+    
+    <button onclick="sendClick()">기록보기</button>
+</body>
+</html>
