@@ -2,21 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
-    <script>
-        async function sendClick() {
-            const response = await fetch("/records", { method: "POST" });
-            const result = await response.json();
-            console.log(result);
-        }
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Click Tracker</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/script.js" defer></script>
 </head>
 <body>
-    <h1>기록 저장 서비스</h1>
-    
-    <!-- 이미지 추가 -->
-    <img src="/static/img/christmas_tree.jpeg" alt="Example Image" width="300">
-    
-    <button onclick="sendClick()">기록보기</button>
+    <h1>Click an Image</h1>
+    <div class="image-container">
+        <img src="/static/img/1.jpg" alt="Image 1" data-id="1" data-name="Image One">
+        <img src="/static/img/2.jpg" alt="Image 2" data-id="2" data-name="Image Two">
+        <img src="/static/img/3.jpg" alt="Image 3" data-id="3" data-name="Image Three">
+    </div>
 </body>
 </html>
