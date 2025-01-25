@@ -3,23 +3,8 @@ import boto3
 from botocore.exceptions import ClientError
 
 
-from app.models.record import KakaoUser
+from models.record import KakaoUser
 
-fake_db = {}
-
-
-def save_kakao_user(user_info: dict):
-    print('살행')
-    user = KakaoUser(
-        id=user_info["id"],
-        nickname=user_info["properties"]["nickname"],
-        email=user_info.get("kakao_account", {}).get("email"),
-        profile_image=user_info["properties"].get("profile_image"),
-    )
-
-    fake_db[user.id] = user.dict()
-    print('끝')
-    return user
 
 # 환경 변수에서 DynamoDB 설정 로드
 DYNAMODB_TABLE = os.getenv("DYNAMODB_TABLE", "click_records")

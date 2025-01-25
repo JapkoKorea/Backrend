@@ -8,7 +8,17 @@
     <script src="/static/js/script.js" defer></script>
 </head>
 <body>
-    <h1>Click an Image</h1>
+    <header>
+        <div class="header-content">
+            <h1>Click an Image</h1>
+            <!-- 로그인 상태에 따라 버튼 변경 -->
+            {% if is_logged_in %}
+                <button id="auth-button" onclick="location.href='/kakao/logout'">로그아웃</button>
+            {% else %}
+                <button id="auth-button" onclick="location.href='/kakao/login'">로그인</button>
+            {% endif %}
+        </div>
+    </header>
     <div class="image-container">
         <img src="/static/img/1.jpg" alt="Image 1" data-id="1" data-name="Image One">
         <img src="/static/img/2.jpg" alt="Image 2" data-id="2" data-name="Image Two">

@@ -11,6 +11,10 @@ class ClickData(BaseModel):
     image_name: str
     timestamp: int
 
+# 세션 관리 함수
+session_cache = {}  # {user_id: {"session_id": str, "expires": datetime}}
+
+
 @router.post("/")
 async def log_click(request: Request, data: ClickData):
     # 사용자 정보 확인
