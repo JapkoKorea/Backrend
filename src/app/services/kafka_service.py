@@ -20,7 +20,5 @@ def send_to_kafka(topic: str, message: dict):
     try:
         producer.send(topic, value=message)
         producer.flush()
-        print(f"Message sent to Kafka topic '{topic}': {message}")
     except Exception as e:
-        print(f"Failed to send message to Kafka: {e}")
         raise

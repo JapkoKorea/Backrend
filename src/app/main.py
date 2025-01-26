@@ -11,7 +11,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # 라우터 등록
 app.include_router(click.router, prefix="/click", tags=["Click Logs"])
 app.include_router(kakao.router, prefix="/kakao", tags=["Kakao"])
-app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+# app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 # index.html 렌더링
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):

@@ -6,3 +6,4 @@ class UserModel(BaseModel):
     userName: str  # 사용자 이름
     birthday: str  # 생년월일 (YYYY-MM-DD 형식)
     phoneNumber: str  # 휴대폰 번호
+    OAuth: str

@@ -1,6 +1,6 @@
 import boto3
 from models.user_model import UserModel
-
+from boto3.dynamodb.conditions import Key
 # DynamoDB 초기화
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table("test")  # DynamoDB 테이블 이름
@@ -21,6 +21,19 @@ def update_user(user: UserModel):
 def delete_session(pk: str):
     table.delete_item(Key={"pk": pk, "sk": "session"})
 
+def query_info(kakao_id: str):
+    try:
+        variable = table.query(
+            IndexName="info-index",
+            KeyConditionExpression=Key('sk').eq('info'),
+            FilterExpression=Key('OAuth').eq(f'kakao#{kakao_id}')
+        )
+        data = variable['Items']
+        
+        return data[0]
+    except Exception as e:
+        
+        return None
 # import boto3
 # from models.session_model import SessionModel
 
