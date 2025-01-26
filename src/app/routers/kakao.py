@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Query
 from fastapi.responses import RedirectResponse
 from routers.kakao_handler import get_kakao_access_token, get_kakao_user_info
 from fastapi.templating import Jinja2Templates
@@ -41,7 +41,7 @@ async def kakao_login():
 
 @router.get("/callback")
 async def kakao_callback(code: str):
-
+    print('yayaya',code)
     # Access Token 요청
     kakao_access_token = await get_kakao_access_token(code, KAKAO_CLIENT_ID, KAKAO_REDIRECT_URI)
     if not kakao_access_token:
