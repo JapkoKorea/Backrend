@@ -1,17 +1,10 @@
-# import os
-
-# import requests
-
-# from oauth.social_schema import SocialMember, PROVIDER_ENUM
-
-# KAKAO_CLIENT_ID = os.getenv("KAKAO_CLIENT_ID")
-# KAKAO_SECRET = os.getenv("KAKAO_SECRET")
-# KAKAO_CALLBACK_URI = "http://127.0.0.1:5500/kakao/callback.html"
-
+from dotenv import load_dotenv
+import os
 import httpx
 
-KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token"
-KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me"
+load_dotenv()
+KAKAO_TOKEN_URL = os.getenv('KAKAO_TOKEN_URL')
+KAKAO_USER_INFO_URL = os.getenv('KAKAO_USER_INFO_URL')
 
 
 async def get_kakao_access_token(code: str, client_id: str, redirect_uri: str):
@@ -25,6 +18,7 @@ async def get_kakao_access_token(code: str, client_id: str, redirect_uri: str):
                 "code": code,
             },
         )
+        print('응답:', response)
         if response.status_code != 200:
             return None
         return response.json().get("access_token")

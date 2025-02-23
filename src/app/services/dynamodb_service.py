@@ -9,6 +9,10 @@ def save_user(user: UserModel):
     """사용자 정보를 DynamoDB에 저장"""
     table.put_item(Item=user.dict())
 
+def save_reservation(data):
+    """사용자 예약 신청정보를 DB에 저장"""
+    table.put_item(Item=data)
+
 def get_user_by_pk(pk: str):
     """사용자 정보를 pk로 조회"""
     response = table.get_item(Key={"pk": pk, "sk": "info"})
@@ -33,6 +37,18 @@ def query_info(kakao_id: str):
         return data[0]
     except Exception as e:
         
+        return None
+
+def query_info_pk(pk: str):
+    try:
+        variable = table.query(
+            IndexName="info-index",
+            KeyConditionExpression=Key('sk').eq('info'),
+            FilterExpression=Key('pk').eq(pk)
+        )
+        data = variable['Items']
+        return data if len(data) > 0 else None
+    except Exception as e:
         return None
 # import boto3
 # from models.session_model import SessionModel

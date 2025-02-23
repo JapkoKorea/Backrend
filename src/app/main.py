@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-from routers import click, kakao, auth
+from routers import click, kakao, auth, line, kakao_chat, reserve_taxi
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -24,6 +24,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # 라우터 등록
 app.include_router(click.router, prefix="/click", tags=["Click Logs"])
 app.include_router(kakao.router, prefix="/kakao", tags=["Kakao"])
+app.include_router(line.router, prefix="/line", tags=["Line"])
+app.include_router(kakao_chat.router, prefix="/kakao_chat", tags=["Kakao Chatbot"])
+app.include_router(reserve_taxi.router, prefix="/reserve_taxi", tags=["Reserve Taxi"])
 # app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 # index.html 렌더링
 @app.get("/")
@@ -33,7 +36,7 @@ async def read_root():
     # return templates.TemplateResponse(
     #     "index.html", {"request": request, "is_logged_in": is_logged_in}
     # )
-  return 
+  return 'hello, server'
 # @app.get("/", response_class=HTMLResponse)
 # async def read_root():
 #     with open("templates/index.html", "r", encoding="utf-8") as file:

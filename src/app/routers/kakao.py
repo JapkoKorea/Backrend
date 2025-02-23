@@ -12,22 +12,26 @@ from services.dynamodb_service import save_user, get_user_by_pk, query_info
 from models.user_model import UserModel
 import uuid
 from urllib.parse import quote
-from utils import get_korea_time
+from utils.utils import get_korea_time
+from dotenv import load_dotenv
+import os
+# 환경 변수 로드
+load_dotenv()
+
+
 router = APIRouter()
 
-templates = Jinja2Templates(directory="templates/")
+# templates = Jinja2Templates(directory="templates/")
 
 # 세션에 저장된 리프레시 토큰
 active_refresh_tokens = {}
 
-@router.get("/kakao_success")
-async def success_page(request: Request):
-    return templates.TemplateResponse("kakao_success.html", {"request": request})
-
-
-KAKAO_CLIENT_ID = "46804a27702caeeef07d7f127980b015"
-KAKAO_REDIRECT_URI = "http://localhost:8000/kakao/callback"
-KAKAO_LOGOUT_REDIRECT_URI = "http://localhost:8000/kakao/logout_success"
+# @router.get("/kakao_success")
+# async def success_page(request: Request):
+#     return templates.TemplateResponse("kakao_success.html", {"request": request})
+KAKAO_CLIENT_ID = os.getenv('KAKAO_CLIENT_ID')
+KAKAO_REDIRECT_URI = os.getenv('KAKAO_REDIRECT_URI')
+KAKAO_LOGOUT_REDIRECT_URI = os.getenv('KAKAO_LOGOUT_REDIRECT_URI')
 
 @router.get("/login")
 async def kakao_login():
@@ -44,6 +48,7 @@ async def kakao_callback(code: str):
     print('yayaya',code)
     # Access Token 요청
     kakao_access_token = await get_kakao_access_token(code, KAKAO_CLIENT_ID, KAKAO_REDIRECT_URI)
+    print('카카오액세스토큰:', kakao_access_token)
     if not kakao_access_token:
         raise HTTPException(status_code=400, detail="Failed to get Kakao access token")
 
@@ -64,7 +69,7 @@ async def kakao_callback(code: str):
     # DynamoDB에서 사용자 정보 조회
     existing_user = query_info(kakao_id)
     # existing_user = get_user_by_pk(f"kakao#{kakao_id}")
-
+    print('1')
     if not existing_user:
         
         # 신규 사용자 저장
@@ -88,7 +93,7 @@ async def kakao_callback(code: str):
     jwt_access_token = create_access_token({"id": pk})
     refresh_token = create_refresh_token({"id": pk})
 
-
+    
     # # 로그인 상태를 DynamoDB에 저장 (또는 세션 유지)
     # save_user(
     #     UserModel(
@@ -102,12 +107,15 @@ async def kakao_callback(code: str):
     # )
     # URL 인코딩으로 한글 문제 해결
     encoded_user_name = quote(user_name)
+    
     # 메인 페이지로 리디렉션
     response = RedirectResponse(url="/")
+    
     response.set_cookie(key="access_token", value=jwt_access_token, httponly=False)
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=False)
     response.set_cookie(key="user_name", value=encoded_user_name, httponly=False) 
     response.set_cookie(key="kakao_access_token", value=kakao_access_token, httponly=False) 
+    
     return response
 
 
